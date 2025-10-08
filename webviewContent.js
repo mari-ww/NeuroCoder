@@ -25,7 +25,7 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroAssist - Configurações</title>
+    <title>NeuroCoder - Configurações</title>
     <style>
         :root {
             --primary: #4a6fa5;
@@ -482,7 +482,7 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
         <header>
             <div class="logo">
                 <span class="logo-icon">🧠</span>
-                <h1>NeuroAssist</h1>
+                <h1>NeuroCoder</h1>
             </div>
             <button class="theme-toggle" id="themeToggle">🌙</button>
         </header>

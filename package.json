@@ -1,9 +1,9 @@
 {
-  "name": "neuroassist",
+  "name": "NeuroCoder",
   "displayName": "Teste",
   "description": "aaa",
   "version": "1.0.1",
-  "publisher": "mariWW",  
+  "publisher": "Mari-ww",  
   "engines": {
     "vscode": "^1.97.0"
   },
@@ -13,7 +13,7 @@
   
   "repository": {
     "type": "git",
-    "url": "https://github.com/mari-ww/NeuroAssist.git"
+    "url": "https://github.com/mari-ww/NeuroCoder.git"
   },
 
   "activationEvents": [],
@@ -21,39 +21,39 @@
   "contributes": {
     "commands": [
       {
-        "command": "neuroassist.showSettingsPanel",
-        "title": "Mostrar Configurações do NeuroAssist",
-        "category": "NeuroAssist"
+        "command": "NeuroCoder.showSettingsPanel",
+        "title": "Mostrar Configurações do NeuroCoder",
+        "category": "NeuroCoder"
       },
       {
-          "command": "neuroassist.activateFocusMode",
+          "command": "NeuroCoder.activateFocusMode",
           "title": "Ativar Modo Foco",
-          "category": "NeuroAssist"
+          "category": "NeuroCoder"
       },
       {
-          "command": "neuroassist.deactivateFocusMode",
+          "command": "NeuroCoder.deactivateFocusMode",
           "title": "Desativar Modo Foco",
-          "category": "NeuroAssist"
+          "category": "NeuroCoder"
       },
       {
-        "command": "neuroassist.listVariables",
+        "command": "NeuroCoder.listVariables",
         "title": "Listar Variáveis",
-        "category": "NeuroAssist"
+        "category": "NeuroCoder"
       },
       {
-        "command": "neuroassist.addVariable",
+        "command": "NeuroCoder.addVariable",
         "title": "Adicionar Variável",
-        "category": "NeuroAssist"
+        "category": "NeuroCoder"
       }
     ],
     "keybindings": [
       {
-        "command": "neuroassist.toggleFocusMode",
+        "command": "NeuroCoder.toggleFocusMode",
         "key": "ctrl+alt+f",
         "mac": "cmd+alt+f"
       },
       {
-        "command": "neuroassist.showSettingsPanel",
+        "command": "NeuroCoder.showSettingsPanel",
         "key": "ctrl+alt+s",
         "mac": "cmd+alt+s"
       }
@@ -61,24 +61,24 @@
     "configuration": {
       "type": "object",
       "properties": {
-        "neuroassist.focusModeBackground": {
+        "NeuroCoder.focusModeBackground": {
           "type": "string",
           "default": "rgba(0, 0, 0, 0.7)",
           "description": "Cor do fundo ao ativar o Modo de Leitura Aprimorado."
         },
-        "neuroassist.dyslexicMode": {
+        "NeuroCoder.dyslexicMode": {
           "type": "boolean",
           "default": false,
           "description": "Ativar modo dislexia (fonte OpenDyslexic)"
         },
-        "neuroassist.focusModeOpacity": {
+        "NeuroCoder.focusModeOpacity": {
           "type": "number",
           "default": 0.7,
           "minimum": 0.1,
           "maximum": 1,
           "description": "Opacidade do fundo no Modo de Leitura Aprimorado (0.1 = mais claro, 1.0 = totalmente escuro)."
         },
-        "neuroassist.font": {
+        "NeuroCoder.font": {
           "type": "string",
           "default": "Lexend",
           "enum": [
@@ -87,12 +87,12 @@
           ],
           "description": "Fonte utilizada no editor"
         },
-        "neuroassist.fontSize": {
+        "NeuroCoder.fontSize": {
           "type": "number",
           "default": 14,
           "description": "Tamanho da fonte no editor"
         },
-        "neuroassist.color": {
+        "NeuroCoder.color": {
           "type": "string",
           "default": "#000000",
           "description": "Cor do texto no editor"

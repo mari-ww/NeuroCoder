@@ -30,8 +30,8 @@ function saveSettings(font, fontSize, color, letterSpacing, lineHeight, dyslexic
     userSettings.update('colorCustomizations', editorColorSettings.colorCustomizations, vscode.ConfigurationTarget.Global);
   
     // Salvar configuração do modo disléxico
-    const neuroAssistConfig = vscode.workspace.getConfiguration('neuroassist');
-    neuroAssistConfig.update('dyslexicMode', dyslexicMode, vscode.ConfigurationTarget.Global);
+    const NeuroCoderConfig = vscode.workspace.getConfiguration('NeuroCoder');
+    NeuroCoderConfig.update('dyslexicMode', dyslexicMode, vscode.ConfigurationTarget.Global);
   }
   
   // Função para verificar se a fonte está instalada

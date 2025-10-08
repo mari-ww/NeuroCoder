@@ -30,19 +30,19 @@ function activate(context) {
 });
 
   context.subscriptions.push(
-      vscode.commands.registerCommand("neuroassist.activateFocusMode", () => {
+      vscode.commands.registerCommand("NeuroCoder.activateFocusMode", () => {
           activateFocusMode();
       })
   );
 
   context.subscriptions.push(
-      vscode.commands.registerCommand("neuroassist.deactivateFocusMode", () => {
+      vscode.commands.registerCommand("NeuroCoder.deactivateFocusMode", () => {
           deactivateFocusMode();
       })
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('neuroassist.showSettingsPanel', () => {
+    vscode.commands.registerCommand('NeuroCoder.showSettingsPanel', () => {
       if (settingsPanel) {
         settingsPanel.reveal(vscode.ViewColumn.Two);
         return;
@@ -65,7 +65,7 @@ function activate(context) {
       const beepSoundUri = settingsPanel.webview.asWebviewUri(vscode.Uri.file(beepSoundPath));
 
       const variables = listVariables();
-      const config = vscode.workspace.getConfiguration('neuroassist');
+      const config = vscode.workspace.getConfiguration('NeuroCoder');
       const savedSettings = {
         font: config.get('font', 'Lexend'),
         fontSize: config.get('fontSize', 18),
@@ -127,14 +127,14 @@ function activate(context) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('neuroassist.listVariables', () => {
+    vscode.commands.registerCommand('NeuroCoder.listVariables', () => {
       const vari = listVariables();
       console.table(vari);
     })
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('neuroassist.addVariable', async () => {
+    vscode.commands.registerCommand('NeuroCoder.addVariable', async () => {
       const name = await vscode.window.showInputBox({ prompt: 'Nome da variável' });
       if (!name) return;
   
@@ -229,7 +229,7 @@ function updateFocusOpacity(opacity) {
   focusDecoration.dispose();
 
   // Atualiza configuração global
-  const config = vscode.workspace.getConfiguration('neuroassist');
+  const config = vscode.workspace.getConfiguration('NeuroCoder');
   config.update('focusModeOpacity', opacity, vscode.ConfigurationTarget.Global);
 
   // Recria a decoração com nova opacidade
@@ -247,7 +247,7 @@ function updateFocusOpacity(opacity) {
 }
 
 function applyFocusMode(editor) {
-  const config = vscode.workspace.getConfiguration("neuroassist");
+  const config = vscode.workspace.getConfiguration("NeuroCoder");
   const opacity = config.get("focusModeOpacity", 0.7);
 
   currentDecoration = vscode.window.createTextEditorDecorationType({

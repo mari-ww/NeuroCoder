@@ -1,4 +1,4 @@
-# NeuroAssist: Extensão VS Code para Acessibilidade Neurodivergente
+# NeuroCoder: Extensão VS Code para Acessibilidade Neurodivergente
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![Downloads](https://img.shields.io/badge/downloads-1k%2B-brightgreen)
@@ -6,7 +6,7 @@
 ![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple)
 
 ## 📖 Descrição
-A **NeuroAssist** é uma extensão para Visual Studio Code projetada especificamente para **programadores neurodivergentes**, oferecendo ferramentas de acessibilidade visual avançadas para melhorar a experiência de codificação. 
+A **NeuroCoder** é uma extensão para Visual Studio Code projetada especificamente para **programadores neurodivergentes**, oferecendo ferramentas de acessibilidade visual avançadas para melhorar a experiência de codificação. 
 
 ### ✨ Recursos Principais:
 - **Interface Acessível**: Design limpo com temas claro/escuro e fontes otimizadas para dislexia
@@ -20,7 +20,7 @@ A **NeuroAssist** é uma extensão para Visual Studio Code projetada especificam
 ### Via Marketplace
 1. Abra o VS Code
 2. Pressione `Ctrl+Shift+X`
-3. Busque por **"NeuroAssist"**
+3. Busque por **"NeuroCoder"**
 4. Clique em **Instalar**
 
 > **Atalhos:**
@@ -30,8 +30,8 @@ A **NeuroAssist** é uma extensão para Visual Studio Code projetada especificam
 
 ## Desenvolvimento
 ```bash
-git clone https://github.com/mari-ww/NeuroAssist.git
-cd NeuroAssist
+git clone https://github.com/mari-ww/NeuroCoder.git
+cd NeuroCoder
 npm install
 # Pressione F5 no VS Code para testar
 ```
@@ -55,7 +55,7 @@ npm install
 
 ## 📺 Demonstração
 <p align="center">
-  <img src="images/demo.gif" alt="Demonstração da NeuroAssist" width="600">
+  <img src="images/demo.gif" alt="Demonstração da NeuroCoder" width="600">
 </p>
 
 ## 🛠️ Integração Técnica
@@ -76,20 +76,20 @@ npm install
 
 ## 🔧 Desenvolvimento
 ```bash
-git clone https://github.com/mari-ww/NeuroAssist.git
-cd NeuroAssist
+git clone https://github.com/mari-ww/NeuroCoder.git
+cd NeuroCoder
 npm install
 # Pressione F5 no VS Code para testar
 ```
 
 ## 🤝 Contribuindo
-1. Reporte Bugs: [Abrir Issue](https://github.com/mari-ww/NeuroAssist/issues)
+1. Reporte Bugs: [Abrir Issue](https://github.com/mari-ww/NeuroCoder/issues)
 2. Sugira Funcionalidades: Use o template de feature request
 3. Envie Pull Requests: Siga as guidelines de contribuição
 
 ## 🔗 Links Úteis
-- [Repositório GitHub](https://github.com/mari-ww/NeuroAssist)
-- [Relatar Issues](https://github.com/mari-ww/NeuroAssist/issues)
+- [Repositório GitHub](https://github.com/mari-ww/NeuroCoder)
+- [Relatar Issues](https://github.com/mari-ww/NeuroCoder/issues)
 - [Documentação VS Code API](https://code.visualstudio.com/api)
 
 ## 📝 Licença
@@ -97,6 +97,6 @@ MIT License - Consulte o arquivo LICENSE para mais detalhes.
 
 ✨ Desenvolvido com acessibilidade em mente ✨
 
-> Encontrou um bug? Tem uma sugestão? Abra uma [issue](https://github.com/mari-ww/NeuroAssist/issues).
+> Encontrou um bug? Tem uma sugestão? Abra uma [issue](https://github.com/mari-ww/NeuroCoder/issues).
 
 💡 Dica: A extensão é totalmente gratuita e de código aberto. Sua contribuição é bem-vinda!
