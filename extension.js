@@ -43,6 +43,8 @@ function activate(context) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('NeuroCoder.showSettingsPanel', () => {
+      console.log('Comando NeuroCoder.showSettingsPanel executado');
+      
       if (settingsPanel) {
         settingsPanel.reveal(vscode.ViewColumn.Two);
         return;

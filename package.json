@@ -27,6 +27,11 @@
         "category": "NeuroCoder"
       },
       {
+        "command": "NeuroCoder.openSettings",
+        "title": "Abrir Configurações NeuroCoder",
+        "category": "NeuroCoder"
+      },
+      {
           "command": "NeuroCoder.activateFocusMode",
           "title": "Ativar Modo Foco",
           "category": "NeuroCoder"
@@ -56,7 +61,13 @@
       {
         "command": "NeuroCoder.showSettingsPanel",
         "key": "ctrl+alt+s",
-        "mac": "cmd+alt+s"
+        "mac": "cmd+alt+s",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "NeuroCoder.openSettings", 
+        "key": "ctrl+shift+alt+s",
+        "mac": "cmd+shift+alt+s"
       }
     ],
     "configuration": {
