@@ -1,24 +1,22 @@
 {
-  "name": "NeuroCoder",
+  "name": "neurocoder",
   "displayName": "NeuroCoder",
-  "description": "VS Code extension for neurodivergent programmers. Offers visual accessibility tools, focus mode, dyslexia-friendly fonts, and productivity features to create an inclusive coding environment.",
-  "version": "1.0.2",
+  "description": "VS Code extension for neurodivergent programmers. Offers visual accessibility tools, focus mode, dyslexia-friendly fonts, color-blind friendly themes, and productivity features.",
+  "version": "1.0.4",
   "publisher": "Mari-ww",
-  "icon": "images/logo.png",  
+  "icon": "media/images/logo.png",
   "engines": {
     "vscode": "^1.97.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Themes"
   ],
-  
   "repository": {
     "type": "git",
     "url": "https://github.com/mari-ww/NeuroCoder.git"
   },
-
-  "activationEvents": [],
-  "main": "./extension.js",
+  "main": "./src/extension.js",
   "contributes": {
     "commands": [
       {
@@ -27,28 +25,18 @@
         "category": "NeuroCoder"
       },
       {
-        "command": "NeuroCoder.openSettings",
-        "title": "Abrir Configurações NeuroCoder",
+        "command": "NeuroCoder.activateFocusMode",
+        "title": "Ativar Modo Foco",
         "category": "NeuroCoder"
       },
       {
-          "command": "NeuroCoder.activateFocusMode",
-          "title": "Ativar Modo Foco",
-          "category": "NeuroCoder"
-      },
-      {
-          "command": "NeuroCoder.deactivateFocusMode",
-          "title": "Desativar Modo Foco",
-          "category": "NeuroCoder"
-      },
-      {
-        "command": "NeuroCoder.listVariables",
-        "title": "Listar Variáveis",
+        "command": "NeuroCoder.deactivateFocusMode",
+        "title": "Desativar Modo Foco",
         "category": "NeuroCoder"
       },
       {
-        "command": "NeuroCoder.addVariable",
-        "title": "Adicionar Variável",
+        "command": "NeuroCoder.toggleFocusMode",
+        "title": "Alternar Modo Foco",
         "category": "NeuroCoder"
       }
     ],
@@ -61,18 +49,53 @@
       {
         "command": "NeuroCoder.showSettingsPanel",
         "key": "ctrl+alt+s",
-        "mac": "cmd+alt+s",
-        "when": "editorTextFocus"
+        "mac": "cmd+alt+s"
+      }
+    ],
+    "themes": [
+      {
+        "label": "NeuroCoder Protanopia",
+        "uiTheme": "vs-dark",
+        "path": "./media/themes/protanopia-color-theme.json"
       },
       {
-        "command": "NeuroCoder.openSettings", 
-        "key": "ctrl+shift+alt+s",
-        "mac": "cmd+shift+alt+s"
+        "label": "NeuroCoder Deuteranopia", 
+        "uiTheme": "vs-dark",
+        "path": "./media/themes/deuteranopia-color-theme.json"
+      },
+      {
+        "label": "NeuroCoder Tritanopia",
+        "uiTheme": "vs-dark", 
+        "path": "./media/themes/tritanopia-color-theme.json"
+      },
+      {
+        "label": "NeuroCoder Protanopia Light",
+        "uiTheme": "vs",
+        "path": "./media/themes/protanopia-light-color-theme.json"
+      },
+      {
+        "label": "NeuroCoder Deuteranopia Light",
+        "uiTheme": "vs",
+        "path": "./media/themes/deuteranopia-light-color-theme.json"
       }
     ],
     "configuration": {
       "type": "object",
+      "title": "NeuroCoder",
       "properties": {
+        "NeuroCoder.colorBlindTheme": {
+          "type": "string",
+          "default": "none",
+          "enum": [
+            "none",
+            "protanopia",
+            "deuteranopia", 
+            "tritanopia",
+            "protanopia-light",
+            "deuteranopia-light"
+          ],
+          "description": "Tema para daltonismo (aplicado automaticamente)"
+        },
         "NeuroCoder.focusModeBackground": {
           "type": "string",
           "default": "rgba(0, 0, 0, 0.7)",
@@ -88,14 +111,18 @@
           "default": 0.7,
           "minimum": 0.1,
           "maximum": 1,
-          "description": "Opacidade do fundo no Modo de Leitura Aprimorado (0.1 = mais claro, 1.0 = totalmente escuro)."
+          "description": "Opacidade do fundo no Modo de Leitura Aprimorado."
         },
         "NeuroCoder.font": {
           "type": "string",
           "default": "Lexend",
           "enum": [
             "Lexend",
-            "OpenDyslexic"
+            "OpenDyslexic",
+            "Arial",
+            "Verdana",
+            "Comic Sans MS",
+            "default"
           ],
           "description": "Fonte utilizada no editor"
         },
