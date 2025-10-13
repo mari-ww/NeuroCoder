@@ -1,4 +1,4 @@
-# <img src="images/logo.png" alt="NeuroCoder Logo" width="40" align="center"> NeuroCoder: VS Code Extension for Neurodivergent Accessibility
+# <img src="media/images/logo.png" alt="NeuroCoder Logo" width="40" align="center"> NeuroCoder: VS Code Extension for Neurodivergent Accessibility
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![Downloads](https://img.shields.io/badge/downloads-1k%2B-brightgreen)
