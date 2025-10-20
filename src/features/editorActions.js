@@ -5,6 +5,8 @@ let currentDecorations = [];
 function saveSettings(font, fontSize, color, letterSpacing, lineHeight, dyslexicMode = false, focusOpacity = 0.7) {
     const configuration = vscode.workspace.getConfiguration('editor');
   
+    console.log('💾 Salvando configurações:', { font, fontSize, color, letterSpacing, lineHeight, dyslexicMode, focusOpacity });
+
     // Verificar fonte antes de aplicar
     checkFontAvailability(font);
   

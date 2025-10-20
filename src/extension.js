@@ -181,6 +181,9 @@ function handleWebviewMessage(message, context) {
             console.log('📱 Comando deactivateFocusMode recebido do webview');
             deactivateFocusMode(settingsPanel);
         },
+        'showColorBlindThemes': () => {
+            showColorBlindThemesQuickPick();
+        },
         'showInformationMessage': () => {
             vscode.window.showInformationMessage(message.text);
         }
@@ -192,6 +195,86 @@ function handleWebviewMessage(message, context) {
     } else {
         console.warn(`⚠️ Comando não reconhecido: ${message.command}`);
     }
+}
+
+function showColorBlindThemesQuickPick() {
+    // Lista de temas funcionais do VS Code com descrições
+    const themes = [
+        { 
+            label: 'Default Dark Modern', 
+            description: 'Tema escuro moderno (Padrão VS Code)',
+            detail: 'Bom contraste para todos os tipos de visão'
+        },
+        { 
+            label: 'Default Light Modern', 
+            description: 'Tema claro moderno (Padrão VS Code)',
+            detail: 'Bom contraste para todos os tipos de visão'
+        },
+        { 
+            label: 'Visual Studio Dark', 
+            description: 'Tema escuro clássico',
+            detail: 'Contraste tradicional do Visual Studio'
+        },
+        { 
+            label: 'Visual Studio Light', 
+            description: 'Tema claro clássico', 
+            detail: 'Contraste tradicional do Visual Studio'
+        },
+        { 
+            label: 'Red', 
+            description: 'Tema com ênfase em vermelho',
+            detail: 'Pode ajudar com Tritanopia (dificuldade com azul/amarelo)'
+        },
+        { 
+            label: 'Blue', 
+            description: 'Tema com ênfase em azul',
+            detail: 'Pode ajudar com Protanopia/Deuteranopia (vermelho/verde)'
+        },
+        { 
+            label: 'Monokai', 
+            description: 'Tema Monokai',
+            detail: 'Alto contraste, popular entre desenvolvedores'
+        },
+        { 
+            label: 'Solarized Dark', 
+            description: 'Tema Solarized Escuro',
+            detail: 'Cores suaves e balanceadas'
+        },
+        { 
+            label: 'Solarized Light', 
+            description: 'Tema Solarized Claro',
+            detail: 'Cores suaves e balanceadas'
+        },
+        { 
+            label: 'High Contrast', 
+            description: 'Alto Contraste',
+            detail: 'Máximo contraste para baixa visão'
+        },
+        { 
+            label: 'High Contrast Light', 
+            description: 'Alto Contraste Claro',
+            detail: 'Máximo contraste claro para baixa visão'
+        }
+    ];
+
+    vscode.window.showQuickPick(themes, {
+        placeHolder: 'Selecione um tema acessível para daltonismo',
+        matchOnDescription: true,
+        matchOnDetail: true
+    }).then(selectedTheme => {
+        if (selectedTheme) {
+            console.log(`🎨 Aplicando tema: ${selectedTheme.label}`);
+            
+            vscode.commands.executeCommand('workbench.action.selectTheme', selectedTheme.label)
+                .then(() => {
+                    vscode.window.showInformationMessage(`✅ Tema "${selectedTheme.label}" aplicado!`);
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao aplicar tema:', error);
+                    vscode.window.showErrorMessage(`❌ Não foi possível aplicar o tema "${selectedTheme.label}". Tente selecionar manualmente.`);
+                });
+        }
+    });
 }
 
 function deactivate() {

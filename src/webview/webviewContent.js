@@ -510,7 +510,7 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
                     <input type="color" id="textColor" class="color-picker" value="${currentSettings.color}">
                 </div>
 
-                <!-- SLIDER DE OPACIDADE DO MODO FOCO (ADICIONADO DE VOLTA) -->
+                <!-- SLIDER DE OPACIDADE DO MODO FOCO -->
                 <div class="form-group">
                     <div class="opacity-display">
                         <label for="focusOpacity">Intensidade do Modo Foco:</label>
@@ -543,6 +543,17 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
                         <input type="checkbox" id="dyslexicMode" ${settings.dyslexicMode ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
+                </div>
+
+                <!-- Botão para escolher tema para daltonismo -->
+                <div class="form-group">
+                    <label>Temas Acessíveis</label>
+                    <button class="btn-action" id="colorBlindThemeBtn" style="width: 100%;">
+                        <span>🎨</span> Escolher Tema para Daltonismo
+                    </button>
+                    <div style="font-size: 12px; color: var(--text-light); margin-top: 8px;">
+                        Abre uma lista com temas otimizados para diferentes tipos de daltonismo
+                    </div>
                 </div>
 
                 <div class="action-buttons">
@@ -710,7 +721,7 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
             playBeep();
         }
 
-        // SLIDER DE OPACIDADE DO MODO FOCO (ADICIONADO DE VOLTA)
+        // SLIDER DE OPACIDADE DO MODO FOCO
         document.getElementById('focusOpacity').addEventListener('input', function() {
             const opacityValue = this.value;
             document.getElementById('focusOpacityValue').textContent = opacityValue + '%';
@@ -768,6 +779,13 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
             themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
             
             localStorage.setItem('theme', newTheme);
+        });
+
+        // Botão de temas para daltonismo
+        document.getElementById('colorBlindThemeBtn').addEventListener('click', function() {
+            vscode.postMessage({ 
+                command: 'showColorBlindThemes' 
+            });
         });
 
         // Botões de ação
