@@ -2,7 +2,7 @@
   "name": "neurocoder",
   "displayName": "NeuroCoder",
   "description": "VS Code extension for neurodivergent programmers. Offers visual accessibility tools, focus mode, dyslexia-friendly fonts, color-blind friendly themes, and productivity features.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "publisher": "Mari-ww",
   "icon": "media/images/logo.png",
   "engines": {
