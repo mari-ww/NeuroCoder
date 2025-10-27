@@ -58,7 +58,7 @@ npm install
 
 ## 📺 Demo
 <p align="center">
-  <img src="images/demo.gif" alt="NeuroCoder Demo" width="600">
+  <img src="media/images/demo.gif" alt="NeuroCoder Demo" width="600">
 </p>
 
 ---
