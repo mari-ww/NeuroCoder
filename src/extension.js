@@ -3,14 +3,15 @@ const path = require('path');
 
 // Imports organizados
 const { getWebviewContent } = require('./webview/webviewContent');
-const { saveSettings, restoreDefaultSettings, markText, clearMarking } = require('./features/editorActions');
+const { saveSettings, restoreDefaultSettings, markText, clearMarking, initializeThemeDetection } = require('./features/editorActions');
 const { 
     activateFocusMode, 
     deactivateFocusMode, 
     updateFocusOpacity, 
     toggleFocusMode, 
     clearFocusMode,
-    isFocusModeActive 
+    isFocusModeActive,
+    syncFocusModeState
 } = require('./features/focusMode');
 
 // Estado global
@@ -22,6 +23,9 @@ let currentTheme = vscode.window.activeColorTheme.kind;
  */
 function activate(context) {
     console.log('🔧 NeuroCoder extension is now active!');
+    
+    // Inicializar detecção de tema
+    initializeThemeDetection();
 
     // Configurar listeners de tema
     setupThemeListener();
@@ -93,7 +97,8 @@ function createSettingsPanel(context) {
             enableScripts: true,
             localResourceRoots: [
                 vscode.Uri.file(path.join(context.extensionPath, 'media', 'sounds'))
-            ]
+            ],
+            retainContextWhenHidden: true
         }
     );
 
@@ -102,6 +107,9 @@ function createSettingsPanel(context) {
 
     // Configurar mensagens do webview
     setupWebviewMessageListener(context);
+
+    // Sincronizar estado do modo foco imediatamente
+    syncFocusModeState(settingsPanel);
 
     // Limpar ao fechar
     settingsPanel.onDidDispose(() => {
@@ -135,12 +143,6 @@ function setupWebviewContent(context) {
         command: "setTheme", 
         theme: currentTheme 
     });
-
-    // Sincronizar estado do modo foco após o webview carregar
-    setTimeout(() => {
-        const { syncFocusModeState } = require('./features/focusMode');
-        syncFocusModeState(settingsPanel);
-    }, 1000);
 }
 
 function setupWebviewMessageListener(context) {
@@ -154,6 +156,8 @@ function setupWebviewMessageListener(context) {
 }
 
 function handleWebviewMessage(message, context) {
+    console.log('📱 Mensagem recebida do webview:', message.command);
+    
     const messageHandlers = {
         'saveSettings': () => {
             saveSettings(
@@ -174,11 +178,11 @@ function handleWebviewMessage(message, context) {
         'clearMarking': () => clearMarking(),
         'updateFocusOpacity': () => updateFocusOpacity(message.focusOpacity),
         'activateFocusMode': () => {
-            console.log('📱 Comando activateFocusMode recebido do webview');
+            console.log('🎯 Comando activateFocusMode recebido do webview');
             activateFocusMode(settingsPanel);
         },
         'deactivateFocusMode': () => {
-            console.log('📱 Comando deactivateFocusMode recebido do webview');
+            console.log('🚫 Comando deactivateFocusMode recebido do webview');
             deactivateFocusMode(settingsPanel);
         },
         'showColorBlindThemes': () => {

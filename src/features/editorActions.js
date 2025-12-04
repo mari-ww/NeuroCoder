@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 
 let currentDecorations = [];
+let originalTheme = null; // Armazenar o tema original
 
 function saveSettings(font, fontSize, color, letterSpacing, lineHeight, dyslexicMode = false, focusOpacity = 0.7) {
     const configuration = vscode.workspace.getConfiguration('editor');
@@ -102,6 +103,11 @@ function createMarkingDecoration(color) {
 }
 
 function restoreDefaultSettings(panel) {
+    console.log('🔄 Iniciando restauração das configurações padrão...');
+    
+    // Salvar o tema atual ANTES de restaurar
+    saveCurrentTheme();
+    
     const configuration = vscode.workspace.getConfiguration('editor');
     const userSettings = vscode.workspace.getConfiguration('workbench');
 
@@ -110,6 +116,12 @@ function restoreDefaultSettings(panel) {
     
     // Restaurar configurações de cor
     restoreColorSettings(userSettings);
+
+    // Restaurar o tema original
+    restoreOriginalTheme();
+
+    // Restaurar configurações do NeuroCoder
+    restoreNeuroCoderSettings();
 
     // Notificar usuário
     vscode.window.showInformationMessage("🔄 Configurações restauradas para os valores padrão.");
@@ -123,30 +135,111 @@ function restoreDefaultSettings(panel) {
     }
 }
 
+function saveCurrentTheme() {
+    const config = vscode.workspace.getConfiguration();
+    originalTheme = config.get('workbench.colorTheme');
+    console.log('🎨 Tema atual salvo:', originalTheme);
+}
+
+function restoreOriginalTheme() {
+    if (originalTheme) {
+        console.log('🎨 Restaurando tema original:', originalTheme);
+        vscode.commands.executeCommand('workbench.action.selectTheme', originalTheme)
+            .then(() => {
+                console.log('✅ Tema original restaurado com sucesso');
+            })
+            .catch(error => {
+                console.error('❌ Erro ao restaurar tema original:', error);
+                // Fallback para tema padrão
+                restoreDefaultTheme();
+            });
+    } else {
+        console.log('ℹ️ Nenhum tema original salvo, restaurando tema padrão');
+        restoreDefaultTheme();
+    }
+}
+
+function restoreDefaultTheme() {
+    // Tema padrão do VS Code
+    const defaultThemes = [
+        'Default Dark Modern',
+        'Default Light Modern', 
+        'Default Dark+',
+        'Default Light+',
+        'Visual Studio Dark',
+        'Visual Studio Light'
+    ];
+
+    // Tentar restaurar para um tema padrão
+    vscode.commands.executeCommand('workbench.action.selectTheme', defaultThemes[0])
+        .then(() => {
+            console.log('✅ Tema padrão restaurado');
+        })
+        .catch(error => {
+            console.error('❌ Erro ao restaurar tema padrão:', error);
+        });
+}
+
 function restoreEditorSettings(configuration) {
+    console.log('📝 Restaurando configurações do editor...');
+    
+    // Restaurar para valores padrão do VS Code
     configuration.update('fontFamily', undefined, vscode.ConfigurationTarget.Global);
     configuration.update('fontSize', undefined, vscode.ConfigurationTarget.Global);
     configuration.update('letterSpacing', undefined, vscode.ConfigurationTarget.Global);
     configuration.update('lineHeight', undefined, vscode.ConfigurationTarget.Global);
+    
+    console.log('✅ Configurações do editor restauradas');
 }
 
 function restoreColorSettings(userSettings) {
+    console.log('🎨 Restaurando configurações de cor...');
+    
     userSettings.update('colorCustomizations', undefined, vscode.ConfigurationTarget.Global);
+    
+    console.log('✅ Configurações de cor restauradas');
+}
+
+function restoreNeuroCoderSettings() {
+    console.log('🧠 Restaurando configurações do NeuroCoder...');
+    
+    const neuroCoderConfig = vscode.workspace.getConfiguration('NeuroCoder');
+    
+    // Restaurar para valores padrão
+    neuroCoderConfig.update('dyslexicMode', false, vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('focusModeOpacity', 0.7, vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('font', 'Lexend', vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('fontSize', 14, vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('color', '#000000', vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('letterSpacing', 0, vscode.ConfigurationTarget.Global);
+    neuroCoderConfig.update('lineHeight', 1.5, vscode.ConfigurationTarget.Global);
+    
+    console.log('✅ Configurações do NeuroCoder restauradas');
 }
 
 function getDefaultSettings() {
     return {
-        font: undefined,
-        fontSize: undefined,
-        color: undefined,
-        letterSpacing: undefined,
-        lineHeight: undefined
+        font: 'Lexend',
+        fontSize: 14,
+        color: '#000000',
+        letterSpacing: 0,
+        lineHeight: 1.5,
+        focusOpacity: 0.7,
+        dyslexicMode: false
     };
+}
+
+// Inicializar: detectar o tema atual quando a extensão é carregada
+function initializeThemeDetection() {
+    const config = vscode.workspace.getConfiguration();
+    originalTheme = config.get('workbench.colorTheme');
+    console.log('🎨 Tema inicial detectado:', originalTheme);
 }
 
 module.exports = { 
     saveSettings, 
     markText, 
     clearMarking, 
-    restoreDefaultSettings 
+    restoreDefaultSettings,
+    initializeThemeDetection
 };
