@@ -1,120 +1,151 @@
-# <img src="media/images/logo.png" alt="NeuroCoder Logo" width="40" align="center"> NeuroCoder: VS Code Extension for Neurodivergent Accessibility
+# <img src="media/images/logo.png" alt="NeuroCoder Logo" width="40" align="center"> NeuroCoder: Extensão VS Code para Acessibilidade Neurodivergente
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Versão](https://img.shields.io/badge/versão-2.0.0-blue)
 ![Downloads](https://img.shields.io/badge/downloads-1k%2B-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-yellow)
-![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple)
+![Licença](https://img.shields.io/badge/licença-MIT-yellow)
+![VS Code](https://img.shields.io/badge/VS%20Code-Extensão-purple)
 
-## 📖 Description
-**NeuroCoder** is a Visual Studio Code extension designed specifically for **neurodivergent programmers**, providing advanced visual accessibility tools to enhance the coding experience.
+## 📖 Descrição
+**NeuroCoder** é uma extensão do Visual Studio Code projetada especificamente para **programadores neurodivergentes**, fornecendo ferramentas avançadas de acessibilidade visual para melhorar a experiência de programação.
 
-### ✨ Key Features:
-- **Accessible Interface**: Clean design with light/dark themes and dyslexia-friendly fonts  
-- **Smart Focus Mode**: Highlights selected code with contextual dimming  
-- **Integrated Pomodoro**: Built-in productivity timer in the settings panel  
-- **Dynamic Highlighting**: Customizable color-based code highlighting system  
-- **Neuro-inclusive Settings**: Fine-tuned adjustments for sensory needs  
+### ✨ Principais Recursos:
+- **Interface Acessível**: Design limpo com temas claro/escuro e fontes amigáveis para dislexia  
+- **Modo Foco Inteligente**: Destaca código selecionado com escurecimento contextual  
+- **Pomodoro Integrado**: Timer de produtividade integrado no painel de configurações  
+- **Realce Dinâmico**: Sistema de destaque de código baseado em cores personalizável  
+- **Configurações Neuroinclusivas**: Ajustes refinados para necessidades sensoriais  
 
-## 🚀 Installation
+## 🚀 Instalação
 
 ### Via Marketplace
-1. Open VS Code  
-2. Press `Ctrl+Shift+X`  
-3. Search for **"NeuroCoder"**  
-4. Click **Install**
+1. Abra o VS Code  
+2. Pressione `Ctrl+Shift+X`  
+3. Procure por **"NeuroCoder"**  
+4. Clique em **Instalar**
 
-> **Shortcuts:**
-> - `Ctrl+Alt+S` → Open settings  
-> - `Ctrl+Alt+F` → Activate Focus Mode  
-> - `Ctrl+Alt+V` → Add variable  
+> **Atalhos:**
+> - `Ctrl+Alt+S` → Abrir configurações  
+> - `Ctrl+Alt+F` → Ativar Modo Foco  
+> - `Ctrl+Alt+V` → Adicionar variável  
 
-## 💻 Development
+## 💻 Desenvolvimento
 ```bash
 git clone https://github.com/mari-ww/NeuroCoder.git
 cd NeuroCoder
 npm install
-# Press F5 in VS Code to test
+# Pressione F5 no VS Code para testar
 ```
+## 🎯 Como Usar
 
-## 🎯 How to Use
+### 🧩 Painel de Configurações Visuais (`Ctrl+Alt+S`)
+- **Fontes Acessíveis:** OpenDyslexic, Comic Sans MS, Verdana  
+- **Ajustes Sensoriais:** Espaçamento de linha e letra personalizável  
+- **Temas:** Troca instantânea entre modo claro/escuro  
+- **Pré-visualização ao Vivo:** Visualização em tempo real de todas as alterações  
 
-### 🧩 Visual Settings Panel (`Ctrl+Alt+S`)
-- **Accessible Fonts:** OpenDyslexic, Comic Sans MS, Verdana  
-- **Sensory Adjustments:** Customizable line and letter spacing  
-- **Themes:** Instant light/dark mode switching  
-- **Live Preview:** Real-time visualization of all changes  
+### ⏱️ Sistema Pomodoro Integrado
+- **Timer de produtividade 25/5** embutido  
+- **Controles diretos** no painel principal  
+- **Display de tempo claro** com layout amigável para foco  
 
-### ⏱️ Integrated Pomodoro System
-- Built-in **25/5 productivity timer**  
-- **Direct controls** in the main panel  
-- **Clear time display** with focus-friendly layout  
+### 🎨 Realce de Código
+- **Cores totalmente personalizáveis** para marcação de código  
+- **Múltiplos realces simultâneos** suportados  
+- **Limpeza com um clique** para resetar todas as marcações instantaneamente  
 
-### 🎨 Code Highlighting
-- **Fully customizable colors** for code marking  
-- **Multiple simultaneous highlights** supported  
-- **One-click clear** to reset all markings instantly  
+### 🎯 Modo Foco Inteligente
+- **Destaque Contextual:** Foca apenas no código selecionado  
+- **Escurecimento Adaptativo:** Reduz a visibilidade do código não relevante  
+- **Ativação Rápida:** Ative/desative com um simples atalho de teclado  
 
 ---
 
-## 📺 Demo
+## 📺 Demonstração
 <p align="center">
-  <img src="media/images/demo.gif" alt="NeuroCoder Demo" width="600">
+  <img src="media/images/demo.gif" alt="Demonstração NeuroCoder" width="600">
 </p>
 
+> **Nota:** A demonstração mostra todas as funcionalidades principais em ação, incluindo o sistema de realce dinâmico e o painel de configurações.
+
 ---
 
-## 🛠️ Technical Integration
+## 🛠️ Integração Técnica
 
-### VS Code API Reference
+### Referência da API do VS Code
 
-| Function                          | Description                | Usage in Project           |
+| Função                          | Descrição                | Uso no Projeto           |
 |----------------------------------|-----------------------------|-----------------------------|
-| `createWebviewPanel`             | Creates web-based UI panels | Visual settings panel       |
-| `getConfiguration`               | Reads and writes preferences| Font/color customization    |
-| `createTextEditorDecorationType` | Styles text in editor       | Highlights & Focus Mode     |
+| `createWebviewPanel`             | Cria painéis de UI baseados em web | Painel de configurações visuais       |
+| `getConfiguration`               | Lê e grava preferências    | Personalização de fonte/cor    |
+| `createTextEditorDecorationType` | Estiliza texto no editor   | Realces & Modo Foco     |
+| `window.showQuickPick`           | Mostra seleção rápida      | Escolha de fontes e temas      |
+| `workspace.getConfiguration`     | Obtém configurações        | Leitura das preferências salvas |
 
+### Estrutura de Arquivos
+```bash
+NeuroCoder/
+├── src/
+│ ├── extension.ts # Ponto de entrada principal
+│ ├── settingsPanel.ts # Painel de configurações
+│ ├── highlightManager.ts # Gerenciador de realces
+│ ├── focusMode.ts # Implementação do modo foco
+│ └── pomodoroTimer.ts # Timer Pomodoro
+├── media/
+│ ├── images/ # Imagens e ícones
+│ └── demo.gif # GIF de demonstração
+├── package.json # Configuração da extensão
+└── README.md # Este arquivo
+```
 ---
 
-## 📦 Dependencies
+## 📦 Dependências
 
 ```json
-"dependencies": {
-  "fastest-levenshtein": "^1.0.16"
+{
+  "dependencies": {
+    "fastest-levenshtein": "^1.0.16"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0",
+    "vsce": "^2.15.0"
+  }
 }
 ```
 
-## 🤝 Contributing
+---
 
-- 🐞 **Report Bugs:** [Open an Issue](https://github.com/mari-ww/NeuroCoder/issues)  
-- 💡 **Suggest Features:** Use the feature request template  
-- 🔧 **Submit Pull Requests:** Follow the contribution guidelines  
+## 🤝 Contribuindo
+
+- 🐞 **Reportar Bugs:** [Abra uma Issue](https://github.com/mari-ww/NeuroCoder/issues)  
+- 💡 **Sugerir Funcionalidades:** Use o template de solicitação de funcionalidades  
+- 🔧 **Enviar Pull Requests:** Siga as diretrizes de contribuição  
 
 ---
 
-## 🔗 Useful Links
+## 🔗 Links Úteis
 
-- 💻 [GitHub Repository](https://github.com/mari-ww/NeuroCoder)  
-- 🚨 [Report Issues](https://github.com/mari-ww/NeuroCoder/issues)  
-- 📘 [VS Code API Documentation](https://code.visualstudio.com/api)  
-
----
-
-## 📝 License
-
-**MIT License** — See the LICENSE file for full details.  
-
-✨ *Built with accessibility in mind* ✨  
-
-> Found a bug? Got an idea? Open an [issue](https://github.com/mari-ww/NeuroCoder/issues).
-
-💡 **Tip:** The extension is completely free and open-source — contributions are always welcome!
+- 💻 [Repositório GitHub](https://github.com/mari-ww/NeuroCoder)  
+- 🚨 [Reportar Problemas](https://github.com/mari-ww/NeuroCoder/issues)  
+- 📘 [Documentação da API do VS Code](https://code.visualstudio.com/api)  
 
 ---
 
-## 🚧 Future Roadmap (Coming Soon)
+## 📝 Licença
 
-- 🗣️ **Voice Reading Mode** — Reads code aloud for auditory processing support  
-- 🎨 **Color-Blind Friendly Themes** — Extended palette for visual inclusivity  
-- 💬 **Community Feedback Hub** — Collaborative accessibility tuning  
+**Licença MIT** — Veja o arquivo LICENSE para detalhes completos.  
 
-> 🧩 Stay tuned for upcoming updates in **v2.1.0+** — your feedback drives development!
+✨ *Construído com acessibilidade em mente* ✨  
+
+> Encontrou um bug? Tem uma ideia? Abra uma [issue](https://github.com/mari-ww/NeuroCoder/issues).
+
+💡 **Dica:** A extensão é completamente gratuita e de código aberto — contribuições são sempre bem-vindas!
+
+---
+
+## 🚧 Roteiro Futuro (Em Breve)
+
+- 🗣️ **Modo Leitura por Voz** — Lê código em voz alta para suporte a processamento auditivo  
+- 💬 **Hub de Feedback da Comunidade** — Ajuste colaborativo de acessibilidade  
+
+> 🧩 Fique atento para as próximas atualizações na **v2.1.0+** — seu feedback impulsiona o desenvolvimento!
