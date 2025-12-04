@@ -183,7 +183,6 @@ function handleWebviewMessage(message, context) {
 
 async function showColorBlindThemesQuickPick() {
 
-    // ⭐ SUA TABELA OFICIAL (apenas 4 temas)
     const themes = [
         { 
             label: "Deuteranopia (Dark) — Modus Vivendi Deuteranopia",
@@ -221,13 +220,6 @@ async function showColorBlindThemesQuickPick() {
     await applyColorBlindTheme(choice.id);
 }
 
-/*  
-   ⭐ Mapa final dos únicos 4 temas suportados:
-   Deuteranopia (Light) → Modus Operandi Deuteranopia
-   Deuteranopia (Dark)  → Modus Vivendi Deuteranopia
-   Tritanopia (Light)   → Modus Operandi Tritanopia
-   Tritanopia (Dark)    → Modus Vivendi Tritanopia
-*/
 const themeMap = {
     "deuteranopia": {
         theme: "Modus Vivendi Deuteranopia",

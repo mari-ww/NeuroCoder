@@ -3,9 +3,6 @@ const vscode = require('vscode');
 let currentDecorations = [];
 let originalTheme = null; // Armazenar o tema original
 
-// -------------------------------
-// 🔵 TEMAS ATUALIZADOS (Modus)
-// -------------------------------
 const COLOR_BLIND_THEMES = {
     "deuteranopia-light": {
         theme: "Modus Operandi Deuteranopia",
@@ -37,7 +34,6 @@ async function applyColorBlindTheme(mode) {
     }
 
     try {
-        // Install extension if required
         if (entry.extension) {
             const ext = vscode.extensions.getExtension(entry.extension);
             if (!ext) {
@@ -55,7 +51,6 @@ async function applyColorBlindTheme(mode) {
             }
         }
 
-        // Apply theme
         await vscode.workspace.getConfiguration().update(
             "workbench.colorTheme",
             entry.theme,
@@ -291,7 +286,6 @@ function getDefaultSettings() {
     };
 }
 
-// Inicializar: detectar o tema atual quando a extensão é carregada
 function initializeThemeDetection() {
     const config = vscode.workspace.getConfiguration();
     originalTheme = config.get('workbench.colorTheme');
