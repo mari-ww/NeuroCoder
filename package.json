@@ -17,6 +17,11 @@
     "url": "https://github.com/mari-ww/NeuroCoder.git"
   },
   "main": "./src/extension.js",
+
+  "extensionDependencies": [
+    "wroyca.modus"
+  ],
+
   "contributes": {
     "commands": [
       {
@@ -40,6 +45,7 @@
         "category": "NeuroCoder"
       }
     ],
+
     "keybindings": [
       {
         "command": "NeuroCoder.toggleFocusMode",
@@ -52,33 +58,7 @@
         "mac": "cmd+alt+s"
       }
     ],
-    "themes": [
-      {
-        "label": "NeuroCoder Protanopia",
-        "uiTheme": "vs-dark",
-        "path": "./media/themes/protanopia-color-theme.json"
-      },
-      {
-        "label": "NeuroCoder Deuteranopia", 
-        "uiTheme": "vs-dark",
-        "path": "./media/themes/deuteranopia-color-theme.json"
-      },
-      {
-        "label": "NeuroCoder Tritanopia",
-        "uiTheme": "vs-dark", 
-        "path": "./media/themes/tritanopia-color-theme.json"
-      },
-      {
-        "label": "NeuroCoder Protanopia Light",
-        "uiTheme": "vs",
-        "path": "./media/themes/protanopia-light-color-theme.json"
-      },
-      {
-        "label": "NeuroCoder Deuteranopia Light",
-        "uiTheme": "vs",
-        "path": "./media/themes/deuteranopia-light-color-theme.json"
-      }
-    ],
+
     "configuration": {
       "type": "object",
       "title": "NeuroCoder",
@@ -88,11 +68,10 @@
           "default": "none",
           "enum": [
             "none",
-            "protanopia",
-            "deuteranopia", 
-            "tritanopia",
-            "protanopia-light",
-            "deuteranopia-light"
+            "deuteranopia-dark",
+            "deuteranopia-light",
+            "tritanopia-dark",
+            "tritanopia-light"
           ],
           "description": "Tema para daltonismo (aplicado automaticamente)"
         },
@@ -139,11 +118,13 @@
       }
     }
   },
+
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "vscode-test"
   },
+
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
@@ -152,6 +133,7 @@
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.19.0"
   },
+
   "dependencies": {
     "axios": "^1.7.9",
     "fast-xml-parser": "^4.5.1",

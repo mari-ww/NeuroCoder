@@ -357,6 +357,19 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
         .variable { color: #fd971f; }
         .number { color: #ae81ff; }
 
+        .color-blind-select-container {
+            display: none;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        [data-theme="dark"] .color-blind-select-container {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
         .pomodoro-container {
             background: var(--card-bg);
             border-radius: 8px;
@@ -548,11 +561,30 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
                 <!-- Botão para escolher tema para daltonismo -->
                 <div class="form-group">
                     <label>Temas Acessíveis</label>
-                    <button class="btn-action" id="colorBlindThemeBtn" style="width: 100%;">
+                    <button class="btn-action" id="openColorBlindSelect" style="width: 100%;">
                         <span>🎨</span> Escolher Tema para Daltonismo
                     </button>
                     <div style="font-size: 12px; color: var(--text-light); margin-top: 8px;">
-                        Abre uma lista com temas otimizados para diferentes tipos de daltonismo
+                        Temas otimizados para diferentes tipos de daltonismo (Modus Themes)
+                    </div>
+                    
+                    <div class="color-blind-select-container" id="colorBlindSelectContainer">
+                        <label for="colorBlindTheme">Selecione o tema acessível:</label>
+                        <select id="colorBlindTheme" style="width: 100%; padding: 6px;">
+                            <option value="none">Nenhum (tema padrão)</option>
+                            <option value="deuteranopia-dark">
+                                Deuteranopia (Dark) — Modus Vivendi Deuteranopia
+                            </option>
+                            <option value="deuteranopia-light">
+                                Deuteranopia (Light) — Modus Operandi Deuteranopia
+                            </option>
+                            <option value="tritanopia-dark">
+                                Tritanopia (Dark) — Modus Vivendi Tritanopia
+                            </option>
+                            <option value="tritanopia-light">
+                                Tritanopia (Light) — Modus Operandi Tritanopia
+                            </option>
+                        </select>
                     </div>
                 </div>
 
@@ -781,10 +813,17 @@ function getWebviewContent(variables = [], settings = {}, focusModeActive = fals
             localStorage.setItem('theme', newTheme);
         });
 
-        // Botão de temas para daltonismo
-        document.getElementById('colorBlindThemeBtn').addEventListener('click', function() {
-            vscode.postMessage({ 
-                command: 'showColorBlindThemes' 
+        // Botão para abrir seletor de temas para daltonismo
+        document.getElementById('openColorBlindSelect').addEventListener('click', function() {
+            const container = document.getElementById('colorBlindSelectContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'block';
+        });
+
+        // Seletor de temas para daltonismo
+        document.getElementById('colorBlindTheme').addEventListener('change', function(e) {
+            vscode.postMessage({
+                command: 'applyColorBlindTheme',
+                mode: e.target.value
             });
         });
 

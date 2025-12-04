@@ -3,7 +3,14 @@ const path = require('path');
 
 // Imports organizados
 const { getWebviewContent } = require('./webview/webviewContent');
-const { saveSettings, restoreDefaultSettings, markText, clearMarking, initializeThemeDetection } = require('./features/editorActions');
+const { 
+    saveSettings, 
+    restoreDefaultSettings, 
+    markText, 
+    clearMarking, 
+    initializeThemeDetection,
+    applyColorBlindTheme
+} = require('./features/editorActions');
 const { 
     activateFocusMode, 
     deactivateFocusMode, 
@@ -24,16 +31,9 @@ let currentTheme = vscode.window.activeColorTheme.kind;
 function activate(context) {
     console.log('🔧 NeuroCoder extension is now active!');
     
-    // Inicializar detecção de tema
     initializeThemeDetection();
-
-    // Configurar listeners de tema
     setupThemeListener();
-
-    // Registrar comandos
     registerCommands(context);
-
-    // Verificar comandos registrados (debug)
     debugCommands();
 }
 
@@ -51,14 +51,11 @@ function setupThemeListener() {
 
 function registerCommands(context) {
     const commands = [
-        // Comandos do Modo Foco
         { command: "NeuroCoder.activateFocusMode", callback: () => activateFocusMode(settingsPanel) },
         { command: "NeuroCoder.deactivateFocusMode", callback: () => deactivateFocusMode(settingsPanel) },
         { command: "NeuroCoder.toggleFocusMode", callback: () => toggleFocusMode(settingsPanel) },
-        
-        // Comandos de Configurações
         { command: 'NeuroCoder.showSettingsPanel', callback: () => showSettingsPanel(context) },
-        { command: 'NeuroCoder.openSettings', callback: () => showSettingsPanel(context) }, 
+        { command: 'NeuroCoder.showColorBlindThemes', callback: () => showColorBlindThemesQuickPick() }
     ];
 
     commands.forEach(({ command, callback }) => {
@@ -84,7 +81,6 @@ function showSettingsPanel(context) {
         return;
     }
 
-    // Criar painel de configurações
     createSettingsPanel(context);
 }
 
@@ -102,16 +98,11 @@ function createSettingsPanel(context) {
         }
     );
 
-    // Configurar conteúdo do webview
     setupWebviewContent(context);
-
-    // Configurar mensagens do webview
     setupWebviewMessageListener(context);
 
-    // Sincronizar estado do modo foco imediatamente
     syncFocusModeState(settingsPanel);
 
-    // Limpar ao fechar
     settingsPanel.onDidDispose(() => {
         settingsPanel = null;
     });
@@ -133,12 +124,12 @@ function setupWebviewContent(context) {
     };
 
     settingsPanel.webview.html = getWebviewContent(
-        savedSettings, 
-        isFocusModeActive(), 
+        [],
+        savedSettings,
+        isFocusModeActive(),
         beepSoundUri.toString()
     );
 
-    // Enviar tema atual
     settingsPanel.webview.postMessage({ 
         command: "setTheme", 
         theme: currentTheme 
@@ -147,9 +138,7 @@ function setupWebviewContent(context) {
 
 function setupWebviewMessageListener(context) {
     settingsPanel.webview.onDidReceiveMessage(
-        (message) => {
-            handleWebviewMessage(message, context);
-        },
+        (message) => handleWebviewMessage(message, context),
         undefined,
         context.subscriptions
     );
@@ -158,8 +147,8 @@ function setupWebviewMessageListener(context) {
 function handleWebviewMessage(message, context) {
     console.log('📱 Mensagem recebida do webview:', message.command);
     
-    const messageHandlers = {
-        'saveSettings': () => {
+    const handlers = {
+        saveSettings: () => {
             saveSettings(
                 message.font, 
                 message.fontSize, 
@@ -169,116 +158,138 @@ function handleWebviewMessage(message, context) {
                 message.dyslexicMode,
                 message.focusOpacity
             );
-            vscode.window.showInformationMessage(
-                `Configurações salvas: Fonte - ${message.font}, Tamanho - ${message.fontSize}`
-            );
+            vscode.window.showInformationMessage(`Configurações salvas.`);
         },
-        'restoreDefaults': () => restoreDefaultSettings(settingsPanel),
-        'markText': () => markText(message.highlightColor || '#ffff00'),
-        'clearMarking': () => clearMarking(),
-        'updateFocusOpacity': () => updateFocusOpacity(message.focusOpacity),
-        'activateFocusMode': () => {
-            console.log('🎯 Comando activateFocusMode recebido do webview');
-            activateFocusMode(settingsPanel);
+        restoreDefaults: () => restoreDefaultSettings(settingsPanel),
+        markText: () => markText(message.highlightColor || '#1C3F92'),
+        clearMarking: () => clearMarking(),
+        updateFocusOpacity: () => updateFocusOpacity(message.focusOpacity),
+        activateFocusMode: () => activateFocusMode(settingsPanel),
+        deactivateFocusMode: () => deactivateFocusMode(settingsPanel),
+        showColorBlindThemes: () => showColorBlindThemesQuickPick(),
+
+        applyColorBlindTheme: async () => {
+            console.log('🎨 Aplicando tema para daltonismo:', message.mode);
+            await applyColorBlindTheme(message.mode);
         },
-        'deactivateFocusMode': () => {
-            console.log('🚫 Comando deactivateFocusMode recebido do webview');
-            deactivateFocusMode(settingsPanel);
-        },
-        'showColorBlindThemes': () => {
-            showColorBlindThemesQuickPick();
-        },
-        'showInformationMessage': () => {
-            vscode.window.showInformationMessage(message.text);
-        }
+
+        showInformationMessage: () => vscode.window.showInformationMessage(message.text)
     };
 
-    if (messageHandlers[message.command]) {
-        console.log(`🔄 Executando comando: ${message.command}`);
-        messageHandlers[message.command]();
-    } else {
-        console.warn(`⚠️ Comando não reconhecido: ${message.command}`);
+    if (handlers[message.command]) {
+        handlers[message.command]();
     }
 }
 
-function showColorBlindThemesQuickPick() {
-    // Lista de temas funcionais do VS Code com descrições
+async function showColorBlindThemesQuickPick() {
+
+    // ⭐ SUA TABELA OFICIAL (apenas 4 temas)
     const themes = [
         { 
-            label: 'Default Dark Modern', 
-            description: 'Tema escuro moderno (Padrão VS Code)',
-            detail: 'Bom contraste para todos os tipos de visão'
+            label: "Deuteranopia (Dark) — Modus Vivendi Deuteranopia",
+            description: "Tema escuro otimizado para deuteranopia",
+            id: "deuteranopia"
         },
         { 
-            label: 'Default Light Modern', 
-            description: 'Tema claro moderno (Padrão VS Code)',
-            detail: 'Bom contraste para todos os tipos de visão'
+            label: "Deuteranopia (Light) — Modus Operandi Deuteranopia",
+            description: "Tema claro otimizado para deuteranopia",
+            id: "deuteranopia-light"
         },
         { 
-            label: 'Visual Studio Dark', 
-            description: 'Tema escuro clássico',
-            detail: 'Contraste tradicional do Visual Studio'
+            label: "Tritanopia (Dark) — Modus Vivendi Tritanopia",
+            description: "Tema escuro otimizado para tritanopia",
+            id: "tritanopia"
         },
         { 
-            label: 'Visual Studio Light', 
-            description: 'Tema claro clássico', 
-            detail: 'Contraste tradicional do Visual Studio'
+            label: "Tritanopia (Light) — Modus Operandi Tritanopia",
+            description: "Tema claro otimizado para tritanopia",
+            id: "tritanopia-light"
         },
-        { 
-            label: 'Red', 
-            description: 'Tema com ênfase em vermelho',
-            detail: 'Pode ajudar com Tritanopia (dificuldade com azul/amarelo)'
-        },
-        { 
-            label: 'Blue', 
-            description: 'Tema com ênfase em azul',
-            detail: 'Pode ajudar com Protanopia/Deuteranopia (vermelho/verde)'
-        },
-        { 
-            label: 'Monokai', 
-            description: 'Tema Monokai',
-            detail: 'Alto contraste, popular entre desenvolvedores'
-        },
-        { 
-            label: 'Solarized Dark', 
-            description: 'Tema Solarized Escuro',
-            detail: 'Cores suaves e balanceadas'
-        },
-        { 
-            label: 'Solarized Light', 
-            description: 'Tema Solarized Claro',
-            detail: 'Cores suaves e balanceadas'
-        },
-        { 
-            label: 'High Contrast', 
-            description: 'Alto Contraste',
-            detail: 'Máximo contraste para baixa visão'
-        },
-        { 
-            label: 'High Contrast Light', 
-            description: 'Alto Contraste Claro',
-            detail: 'Máximo contraste claro para baixa visão'
+        {
+            label: "Nenhum (tema padrão)",
+            description: "Remove o tema acessível e volta ao padrão",
+            id: "none"
         }
     ];
 
-    vscode.window.showQuickPick(themes, {
-        placeHolder: 'Selecione um tema acessível para daltonismo',
-        matchOnDescription: true,
-        matchOnDetail: true
-    }).then(selectedTheme => {
-        if (selectedTheme) {
-            console.log(`🎨 Aplicando tema: ${selectedTheme.label}`);
-            
-            vscode.commands.executeCommand('workbench.action.selectTheme', selectedTheme.label)
-                .then(() => {
-                    vscode.window.showInformationMessage(`✅ Tema "${selectedTheme.label}" aplicado!`);
-                })
-                .catch(error => {
-                    console.error('❌ Erro ao aplicar tema:', error);
-                    vscode.window.showErrorMessage(`❌ Não foi possível aplicar o tema "${selectedTheme.label}". Tente selecionar manualmente.`);
-                });
-        }
+    const choice = await vscode.window.showQuickPick(themes, {
+        placeHolder: "Selecione um tema acessível"
     });
+
+    if (!choice) return;
+
+    await applyColorBlindTheme(choice.id);
+}
+
+/*  
+   ⭐ Mapa final dos únicos 4 temas suportados:
+   Deuteranopia (Light) → Modus Operandi Deuteranopia
+   Deuteranopia (Dark)  → Modus Vivendi Deuteranopia
+   Tritanopia (Light)   → Modus Operandi Tritanopia
+   Tritanopia (Dark)    → Modus Vivendi Tritanopia
+*/
+const themeMap = {
+    "deuteranopia": {
+        theme: "Modus Vivendi Deuteranopia",
+        extension: "wroyca.modus"
+    },
+    "deuteranopia-light": {
+        theme: "Modus Operandi Deuteranopia",
+        extension: "wroyca.modus"
+    },
+    "tritanopia": {
+        theme: "Modus Vivendi Tritanopia",
+        extension: "wroyca.modus"
+    },
+    "tritanopia-light": {
+        theme: "Modus Operandi Tritanopia",
+        extension: "wroyca.modus"
+    },
+    "none": {
+        theme: "Default Dark Modern",
+        extension: null
+    }
+};
+
+async function applyColorBlindThemeLocal(mode) {
+    const entry = themeMap[mode];
+    if (!entry) {
+        vscode.window.showErrorMessage(`Tema para daltonismo não encontrado: ${mode}`);
+        return;
+    }
+
+    const { theme, extension } = entry;
+
+    try {
+        if (extension) {
+            const isInstalled = vscode.extensions.getExtension(extension);
+
+            if (!isInstalled) {
+                await vscode.window.withProgress({
+                    location: vscode.ProgressLocation.Notification,
+                    title: `Instalando extensão necessária para o tema...`,
+                    cancellable: false
+                }, async () => {
+                    await vscode.commands.executeCommand(
+                        "workbench.extensions.installExtension",
+                        extension
+                    );
+                });
+                vscode.window.showInformationMessage(`Extensão instalada: ${extension}`);
+            }
+        }
+
+        await vscode.workspace.getConfiguration().update(
+            "workbench.colorTheme",
+            theme,
+            vscode.ConfigurationTarget.Global
+        );
+
+        vscode.window.showInformationMessage(`Tema aplicado: ${theme}`);
+        
+    } catch (error) {
+        vscode.window.showErrorMessage(`Erro ao aplicar tema de daltonismo: ${error.message}`);
+    }
 }
 
 function deactivate() {

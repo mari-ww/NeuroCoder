@@ -3,6 +3,72 @@ const vscode = require('vscode');
 let currentDecorations = [];
 let originalTheme = null; // Armazenar o tema original
 
+// -------------------------------
+// 🔵 TEMAS ATUALIZADOS (Modus)
+// -------------------------------
+const COLOR_BLIND_THEMES = {
+    "deuteranopia-light": {
+        theme: "Modus Operandi Deuteranopia",
+        extension: "wroyca.modus"
+    },
+    "deuteranopia-dark": {
+        theme: "Modus Vivendi Deuteranopia",
+        extension: "wroyca.modus"
+    },
+    "tritanopia-light": {
+        theme: "Modus Operandi Tritanopia",
+        extension: "wroyca.modus"
+    },
+    "tritanopia-dark": {
+        theme: "Modus Vivendi Tritanopia",
+        extension: "wroyca.modus"
+    },
+    "none": {
+        theme: "Default Dark Modern",
+        extension: null
+    }
+};
+
+async function applyColorBlindTheme(mode) {
+    const entry = COLOR_BLIND_THEMES[mode];
+    if (!entry) {
+        vscode.window.showErrorMessage(`Tema para daltonismo não encontrado: ${mode}`);
+        return;
+    }
+
+    try {
+        // Install extension if required
+        if (entry.extension) {
+            const ext = vscode.extensions.getExtension(entry.extension);
+            if (!ext) {
+                await vscode.window.withProgress({
+                    location: vscode.ProgressLocation.Notification,
+                    title: `Instalando extensão para tema de daltonismo...`,
+                    cancellable: false
+                }, async () => {
+                    await vscode.commands.executeCommand(
+                        "workbench.extensions.installExtension",
+                        entry.extension
+                    );
+                });
+                vscode.window.showInformationMessage(`Extensão instalada: ${entry.extension}`);
+            }
+        }
+
+        // Apply theme
+        await vscode.workspace.getConfiguration().update(
+            "workbench.colorTheme",
+            entry.theme,
+            vscode.ConfigurationTarget.Global
+        );
+        
+        vscode.window.showInformationMessage(`Tema aplicado: ${entry.theme}`);
+        
+    } catch (error) {
+        vscode.window.showErrorMessage(`Erro ao aplicar tema de daltonismo: ${error.message}`);
+    }
+}
+
 function saveSettings(font, fontSize, color, letterSpacing, lineHeight, dyslexicMode = false, focusOpacity = 0.7) {
     const configuration = vscode.workspace.getConfiguration('editor');
   
@@ -160,7 +226,6 @@ function restoreOriginalTheme() {
 }
 
 function restoreDefaultTheme() {
-    // Tema padrão do VS Code
     const defaultThemes = [
         'Default Dark Modern',
         'Default Light Modern', 
@@ -170,7 +235,6 @@ function restoreDefaultTheme() {
         'Visual Studio Light'
     ];
 
-    // Tentar restaurar para um tema padrão
     vscode.commands.executeCommand('workbench.action.selectTheme', defaultThemes[0])
         .then(() => {
             console.log('✅ Tema padrão restaurado');
@@ -183,7 +247,6 @@ function restoreDefaultTheme() {
 function restoreEditorSettings(configuration) {
     console.log('📝 Restaurando configurações do editor...');
     
-    // Restaurar para valores padrão do VS Code
     configuration.update('fontFamily', undefined, vscode.ConfigurationTarget.Global);
     configuration.update('fontSize', undefined, vscode.ConfigurationTarget.Global);
     configuration.update('letterSpacing', undefined, vscode.ConfigurationTarget.Global);
@@ -204,8 +267,7 @@ function restoreNeuroCoderSettings() {
     console.log('🧠 Restaurando configurações do NeuroCoder...');
     
     const neuroCoderConfig = vscode.workspace.getConfiguration('NeuroCoder');
-    
-    // Restaurar para valores padrão
+
     neuroCoderConfig.update('dyslexicMode', false, vscode.ConfigurationTarget.Global);
     neuroCoderConfig.update('focusModeOpacity', 0.7, vscode.ConfigurationTarget.Global);
     neuroCoderConfig.update('font', 'Lexend', vscode.ConfigurationTarget.Global);
@@ -241,5 +303,6 @@ module.exports = {
     markText, 
     clearMarking, 
     restoreDefaultSettings,
-    initializeThemeDetection
+    initializeThemeDetection,
+    applyColorBlindTheme
 };
